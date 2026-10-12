@@ -1,27 +1,18 @@
-
 #!/bin/bash
 
 # System Information Report
-
-LOG_FILE="$HOME/ds1202-project/logs/sysinfo.log"
-
-echo "===== System Information Report ====="
-echo "Date and Time: $(date)"
-echo "Hostname: $(hostname)"
-echo "Operating System: $(grep PRETTY_NAME /etc/os-release | cut -d '"' -f 2)"
-echo "Kernel: $(uname -r)"
-
-echo ""
-echo "===== MEMORY USAGE ====="
-free -h
-
-echo ""
-echo "===== DISK USAGE ====="
-df -h /
-
-echo ""
-echo "===== Logging ====="
-echo "System report generated at $(date)" >> "$LOG_FILE"
-echo "Report saved to: $LOG_FILE"
-echo "====================================="
+echo "========================================"
+echo "      SYSTEM INFORMATION REPORT"
+echo "========================================"
+echo "Hostname:    $(hostname)"
+echo "OS:          $(lsb_release -d | cut -f2)"
+echo "Kernel:      $(uname -r)"
+echo "Uptime:      $(uptime -p)"
+echo "----------------------------------------"
+echo "Memory Usage:"
+free -h | awk '/Mem:/ {print "  Used: " $3 " / " $2}'
+echo "----------------------------------------"
+echo "Disk Usage (root filesystem):"
+df -h / | awk '/\// {print "  Used: " $3 " / " $2 " (" $5 ")"}'
+echo "========================================"
 
